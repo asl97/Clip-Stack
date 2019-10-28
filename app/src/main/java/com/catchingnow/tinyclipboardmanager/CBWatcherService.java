@@ -317,6 +317,13 @@ public class CBWatcherService extends Service {
                 notificationManager.notify(notificationID++, notification);
             }
         }
+
+        // Clear old notification without clearing existing
+        // So that the notification doesn't twich from getting remove and readded
+        for (int i = notificationID; i < NUMBER_OF_CLIPS+1; i++) {
+            notificationManager.cancel(i);
+        }
+
     }
 
     private void showSingleNotification() {
