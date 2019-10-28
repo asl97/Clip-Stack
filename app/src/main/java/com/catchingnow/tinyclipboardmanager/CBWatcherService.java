@@ -299,7 +299,8 @@ public class CBWatcherService extends Service {
 
         NotificationClipListAdapter notificationClipListAdapter = new NotificationClipListAdapter(this.getBaseContext(), thisClips.get(0));
 
-        for (int i = 1; i < length; i++) {
+        // Add from oldest to newest so that the order is correct
+        for (int i = length-1; i >= 0; i--) {
             notificationClipListAdapter.addClips(thisClips.get(i));
         }
 
@@ -427,7 +428,7 @@ public class CBWatcherService extends Service {
             this.context = context;
             String currentClip = clipObject.getText();
             clips = new ArrayList<>();
-            clips.add(clipObject);
+
             expandedView = new RemoteViews(this.context.getPackageName(), R.layout.notification_clip);
             expandedView.setTextViewText(R.id.current_clip, MyUtil.stringLengthCut(currentClip));
             //add pIntent for share
@@ -574,9 +575,10 @@ public class CBWatcherService extends Service {
             }
             int size = notifications.size();
             if (size > 4) {
-                notifications = notifications.subList(0, 4);
+                // Get the most recently added (newest)
+                notifications = notifications.subList(size-4, size);
             }
-            Collections.reverse(notifications);
+
             return notifications;
 
         }
